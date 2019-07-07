@@ -48,4 +48,6 @@ void main() {
 	fill_with_random_numbers(array);
 	print_array(ptr);
 	print_array(array);
+
+	free(ptr);
 }
