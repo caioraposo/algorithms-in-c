@@ -6,14 +6,33 @@
 void main() {
 	node *root = NULL;
 	
-	
-	root = insert(root, 65);
-	root = insert(root, 78);
-	root = insert(root, 4);
-	root = insert(root, 42);
+	int data, choice;
+	printf(".----- Choose an Option -----.\n");
+	printf("| [1] Insert element         |\n");
+	printf("| [4] Exit                   |\n");
+	printf("'----------------------------'\n\n");
+	while (1) {
+		print_tree(root, NULL, 0);
+		printf("\n");
 
-	print_tree(root);
+		printf("Your choice: ");
+		scanf("%d", &choice);
 
+		switch (choice) {
+			case 1:
+				printf("Type the value: ");
+				scanf("%d", &data);
+				root = insert(root, data);
+				break;
+			case 4:
+				exit(0);
+			default:
+				printf("Invalid Option!\n");
+				break;
+		}
+		printf("\n");
+	}
 	
+
 	free(root);
 }
