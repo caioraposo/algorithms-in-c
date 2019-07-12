@@ -20,5 +20,6 @@ typedef struct node node;
 
 node *insert(node *root, int data);
 void print_tree(node *root, trunk *prev, int is_right);
+int tree_depth(node *root, int depth);
 
 #endif

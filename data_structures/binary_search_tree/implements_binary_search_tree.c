@@ -5,34 +5,22 @@
 
 void main() {
 	node *root = NULL;
+	int depth;
 	
-	int data, choice;
-	printf(".----- Choose an Option -----.\n");
-	printf("| [1] Insert element         |\n");
-	printf("| [4] Exit                   |\n");
-	printf("'----------------------------'\n\n");
-	while (1) {
-		print_tree(root, NULL, 0);
-		printf("\n");
+	root = insert(root, 8);
+	root = insert(root, 15);
+	root = insert(root, 4);
+	root = insert(root, 90);
+	root = insert(root, 90);
+	root = insert(root, 90);
+	root = insert(root, 5);
+	root = insert(root, 1);
 
-		printf("Your choice: ");
-		scanf("%d", &choice);
+	print_tree(root, NULL, 0);	
 
-		switch (choice) {
-			case 1:
-				printf("Type the value: ");
-				scanf("%d", &data);
-				root = insert(root, data);
-				break;
-			case 4:
-				exit(0);
-			default:
-				printf("Invalid Option!\n");
-				break;
-		}
-		printf("\n");
-	}
-	
+	depth = tree_depth(root, -1);
+
+	printf("\nThe depth of the tree is: %d\n", depth);
 
 	free(root);
 }

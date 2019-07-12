@@ -57,7 +57,7 @@ void print_tree(node *root, trunk *prev, int is_right) {
 	
 	if (!prev)
 		strcpy(trk->str, "----");
-	else if (is_left) {
+	else if (is_right) {
 		strcpy(trk->str, ".---");
 		strcpy(prev_str, "    |");
 	} else {
@@ -73,4 +73,20 @@ void print_tree(node *root, trunk *prev, int is_right) {
 	strcpy(trk->str, "    |");
 
 	print_tree(root->left, trk, 0);
+}
+
+
+int tree_depth(node *root, int depth) {
+
+	if (root == NULL)
+		return depth;
+
+	int right = tree_depth(root->right, depth + 1);
+	int left = tree_depth(root->left, depth + 1);
+
+	if (right >= left)
+		return right;
+	else
+		return left;
+
 }
