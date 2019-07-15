@@ -2,20 +2,17 @@
 #define BINARY_SEARCH_TREE_H
 
 
-struct node {
+typedef struct node {
 	int data;
 	struct node *left;
 	struct node *right;
-};
+} node;
 
 
 typedef struct trunk {
 	struct trunk *prev;
 	char str[10];
 } trunk;
-
-
-typedef struct node node;
 
 
 node *insert(node *root, int data);
