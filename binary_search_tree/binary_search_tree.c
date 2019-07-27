@@ -4,6 +4,19 @@
 #include "binary_search_tree.h"
 
 
+typedef struct node {
+	int data;
+	struct node *left;
+	struct node *right;
+} node;
+
+
+typedef struct trunk {
+	struct trunk *prev;
+	char str[10];
+} trunk;
+
+
 trunk *new_trunk(trunk *prev, char str[10]) {
 	trunk *new = malloc(sizeof(trunk));
 	new->prev = prev;
