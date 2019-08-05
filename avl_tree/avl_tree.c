@@ -6,7 +6,6 @@
 
 typedef struct node {
 	int data;
-	int balance_factor;
 	struct node *left;
 	struct node *right;
 } node;
@@ -42,12 +41,29 @@ node *new_node(int data) {
 	new->data = data;
 	new->left = NULL;
 	new->right = NULL;
+
 	return new;
 }
 
 
+node *balance(node *root) {
+	int balfactor = calc_balance_factor(root);
+	
+	if (balfactor == -2) {
+		if (calc_balance_factor(root->left) == 2)
+			root->left = rotate_left(root->left);
+		return rotate_right(root);
+	}
+	else if (balfactor == 2) {
+		if (calc_balance_factor(root->right) == -2)
+			root->right = rotate_right(root->right);
+		return rotate_left(root);
+	}
+	return root;
+}
+
+
 node *insert(node *root, int data) {
-	int balfactor;
 
 	if (root == NULL)
 		return new_node(data);
@@ -56,36 +72,7 @@ node *insert(node *root, int data) {
 	else if (root->data < data)
 		root->right = insert(root->right, data);
 	
-
-	balfactor = calc_balance_factor(root);
-
-	if (balfactor >= -1 && balfactor <= 1)
-		return root;
-
-
-	// Right Rotate
-	if (balfactor > 1 && data <= root->left->data)
-		return rotate_right(root);
-
-	
-	// Left Rotate
-	if (balfactor < -1 && data >= root->right->data)
-		return rotate_left(root);
-
-	
-	// Left Right Rotate
-	if (balfactor > 1 && data >= root->left->data) {
-		root->left = rotate_left(root->left);
-		return rotate_right(root);
-	}
-	
-
-	// Right Left Rotate
-	if (balfactor < -1 && data <= root->right->data) {
-		root->right = rotate_right(root->right);
-		return rotate_left(root);
-	}
-	
+	return balance(root);
 }
 
 
@@ -184,23 +171,39 @@ node *rotate_left(node *root) {
 }
 
 
-void main() {
+void free_tree(node *root) {
+    if (!root)
+        return;
+
+    free_tree(root->left);
+    free_tree(root->right);
+    free(root);
+}
+
+
+int main(void) {
 
 	node *root = NULL;
 
 
-	root = new_node(10);
 	root = insert(root, 5);
+	root = insert(root, 8);
 	root = insert(root, 10);
+	root = insert(root, 198);
+	root = insert(root, 24);
+	root = insert(root, 2);
+	root = insert(root, 98);
+	root = insert(root, 15);
 	
 
-	root = rotate_right(root);
 
 	print_tree(root, NULL, 0);
 	
 
 
-	printf("\n%d\n", calc_balance_factor(root));
+	printf("\nTree balance factor: %d\n", calc_balance_factor(root));
 
-	free(root);
+	free_tree(root);
+
+	return 0;
 }
