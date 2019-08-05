@@ -59,33 +59,33 @@ node *insert(node *root, int data) {
 
 	balfactor = calc_balance_factor(root);
 
+	if (balfactor >= -1 && balfactor <= 1)
+		return root;
+
 
 	// Right Rotate
-	if (balfactor > 1 && data < root->left->data)
+	if (balfactor > 1 && data <= root->left->data)
 		return rotate_right(root);
 
 	
-	
-	
 	// Left Rotate
-	if (balfactor < -1 && data > root->right->data)
+	if (balfactor < -1 && data >= root->right->data)
 		return rotate_left(root);
 
 	
 	// Left Right Rotate
-	if (balfactor > 1 && data > root->left->data) {
+	if (balfactor > 1 && data >= root->left->data) {
 		root->left = rotate_left(root->left);
 		return rotate_right(root);
 	}
 	
 
 	// Right Left Rotate
-	if (balfactor < -1 && data < root->right->data) {
+	if (balfactor < -1 && data <= root->right->data) {
 		root->right = rotate_right(root->right);
 		return rotate_left(root);
 	}
 	
-	return root;
 }
 
 
@@ -116,6 +116,37 @@ int tree_depth(node *root, int depth) {
 }
 
 
+void print_tree(node *root, trunk *prev, int is_right) {
+
+	if (root == NULL)
+		return;
+
+	char prev_str[10] = "     ";
+	trunk *trk = new_trunk(prev, prev_str);
+
+	print_tree(root->right, trk, 1);
+	
+	if (!prev)
+		strcpy(trk->str, "----");
+	else if (is_right) {
+		strcpy(trk->str, ".---");
+		strcpy(prev_str, "    |");
+	} else {
+		strcpy(trk->str, "`---");
+		strcpy(prev->str, prev_str);
+	}
+		
+	show_trunks(trk);
+	printf("%d\n", root->data);
+
+	if (prev)
+		strcpy(prev->str, prev_str);
+	strcpy(trk->str, "    |");
+
+	print_tree(root->left, trk, 0);
+}
+
+
 int calc_balance_factor(node *root) {
 
 	if (root == NULL)
@@ -132,7 +163,10 @@ int calc_balance_factor(node *root) {
 
 
 node *rotate_right(node *root) {
+
 	node *temp = root->left;
+	root->left = temp->right;
+
 	temp->right = root;
 
 	return temp;
@@ -140,9 +174,11 @@ node *rotate_right(node *root) {
 
 
 node *rotate_left(node *root) {
-	node *temp = malloc(sizeof(node));
 	
-	temp->left = new_node(root->data);
+	node *temp = root->right;
+	root->right = temp->left;
+
+	temp->left = root;
 
 	return temp;
 }
@@ -152,19 +188,19 @@ void main() {
 
 	node *root = NULL;
 
-	root = insert(root, 10);
-	root = insert(root, 50);
-	root = insert(root, 100);
+
+	root = new_node(10);
 	root = insert(root, 5);
-	root = insert(root, 2);
-	root = insert(root, 2);
-	root = insert(root, 2);
-	root = insert(root, 2);
-
-	
-	pre_order(root);
+	root = insert(root, 10);
 	
 
+	root = rotate_right(root);
+
+	print_tree(root, NULL, 0);
 	
+
+
+	printf("\n%d\n", calc_balance_factor(root));
+
 	free(root);
 }
