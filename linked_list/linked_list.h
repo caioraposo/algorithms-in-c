@@ -3,14 +3,14 @@
 
 
 struct nodo {
-	int data;
-	struct nodo *next;
+    int data;
+    struct nodo *next;
 };
 
 
 typedef struct {
-	struct nodo *head;
-	struct nodo *tail;
+    struct nodo *head;
+    struct nodo *tail;
 } linked_list;
 
 
