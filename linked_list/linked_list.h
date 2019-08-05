@@ -14,6 +14,7 @@ typedef struct {
 } linked_list;
 
 
+
 /* TODO */
 void insert_position(linked_list *list, int data, int position);
 void delete(linked_list *list, int position);
