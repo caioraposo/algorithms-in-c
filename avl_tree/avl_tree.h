@@ -1,7 +1,6 @@
 #include "../binary_search_tree/binary_search_tree.h"
 
 
-
 #ifndef AVL_TREE_H
 #define AVL_TREE_H
 

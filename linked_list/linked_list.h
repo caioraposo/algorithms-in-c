@@ -2,16 +2,7 @@
 #define LINKED_LIST_H
 
 
-struct nodo {
-    int data;
-    struct nodo *next;
-};
-
-
-typedef struct {
-    struct nodo *head;
-    struct nodo *tail;
-} linked_list;
+typedef struct linked_list linked_list;
 
 
 

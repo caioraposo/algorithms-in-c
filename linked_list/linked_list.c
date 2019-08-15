@@ -3,6 +3,18 @@
 #include "linked_list.h"
 
 
+struct nodo {
+    int data;
+    struct nodo *next;
+};
+
+
+typedef struct linked_list {
+    struct nodo *head;
+    struct nodo *tail;
+} linked_list;
+
+
 void initialize(linked_list *list) {
     list->head = NULL;
     list->tail = NULL;
@@ -71,7 +83,7 @@ void main() {
     int data, choice;
     linked_list list;
     initialize(&list);
-
+    
     printf(".----- Choose an Option -----.\n");
     printf("| [1] Insert from beggining  |\n");
     printf("| [2] Insert in the end      |\n");
