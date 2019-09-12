@@ -92,13 +92,13 @@ void reverse(linked_list *list) {
 
 
 
-void new_aresta(linked_list graph[], int vertice1, int vertice2) {
+void new_aresta(linked_list graph[], int ver1, int ver2) {
     if (ver1 > MAX || ver2 > MAX) {
         printf("Vertice não existe no grafo\n");
         return;
     }
-    insert_beggining(&graph[vertice1], vertice2);
-    insert_beggining(&graph[vertice2], vertice1);
+    insert_beggining(&graph[ver1], ver2);
+    insert_beggining(&graph[ver2], ver1);
 }
 
 
