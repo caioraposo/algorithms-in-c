@@ -2,7 +2,7 @@
 #define LINKED_LIST_H
 
 
-typedef struct linked_list linked_list;
+typedef struct linked_list * linked_list;
 
 
 
