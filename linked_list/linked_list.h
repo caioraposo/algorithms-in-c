@@ -2,7 +2,16 @@
 #define LINKED_LIST_H
 
 
-typedef struct linked_list * linked_list;
+struct node {
+    int data;
+    struct node *next;
+};
+
+
+typedef struct linked_list {
+    struct node *head;
+    struct node *tail;
+} linked_list;
 
 
 

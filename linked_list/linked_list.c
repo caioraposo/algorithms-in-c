@@ -4,18 +4,6 @@
 #include "linked_list.h"
 
 
-struct nodo {
-    int data;
-    struct nodo *next;
-};
-
-
-struct linked_list {
-    struct nodo *head;
-    struct nodo *tail;
-};
-
-
 void initialize(linked_list *list) {
     list->head = NULL;
     list->tail = NULL;
@@ -23,7 +11,7 @@ void initialize(linked_list *list) {
 
 
 void print_list(linked_list *list) {
-    struct nodo *current = list->head;
+    struct node *current = list->head;
     
     if (current == NULL) {
         printf("List is Empty!\n\n");
@@ -39,7 +27,7 @@ void print_list(linked_list *list) {
 
 
 void insert_beggining(linked_list *list, int data) {
-    struct nodo *new = malloc(sizeof(struct nodo));
+    struct node *new = malloc(sizeof(struct node));
     new->data = data;
 
     if (list->head == NULL) {
@@ -56,7 +44,7 @@ void insert_end(linked_list *list, int data) {
     if (list->head == NULL)
         insert_beggining(list, data);
     else {
-        struct nodo *new = malloc(sizeof(struct nodo));
+        struct node *new = malloc(sizeof(struct node));
         new->data = data;
         list->tail->next = new;
         list->tail = new;
@@ -65,9 +53,9 @@ void insert_end(linked_list *list, int data) {
 
 
 void reverse(linked_list *list) {
-    struct nodo *current = list->head;
-    struct nodo *next = NULL;
-    struct nodo *previous = NULL;
+    struct node *current = list->head;
+    struct node *next = NULL;
+    struct node *previous = NULL;
 
     while (current != NULL) {
         next = current->next;
