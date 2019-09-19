@@ -2,42 +2,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "../linked_list/linked_list.h"
+
 
 #define MAX 10
-
-
-struct nodo {
-    int data;
-    struct nodo *next;
-};
-
-
-typedef struct linked_list {
-    struct nodo *head;
-    struct nodo *tail;
-} linked_list;
-
-
-void initialize(linked_list *list) {
-    list->head = NULL;
-    list->tail = NULL;
-}
-
-
-void print_list(linked_list *list) {
-    struct nodo *current = list->head;
-    
-    if (current == NULL) {
-        printf("List is Empty!\n");
-        return;
-    }
-
-    while (current != NULL) {
-        printf(" %d -", current->data);
-        current = current->next;
-    }
-    printf(" NULL\n");
-}
 
 
 void print_graph(linked_list graph[]) {
@@ -47,49 +15,6 @@ void print_graph(linked_list graph[]) {
         print_list(&graph[i]);
     }
 }
-
-
-void insert_beggining(linked_list *list, int data) {
-    struct nodo *new = malloc(sizeof(struct nodo));
-    new->data = data;
-
-    if (list->head == NULL) {
-        list->head = new;
-        list->tail = new;
-    } else {
-        new->next = list->head;
-        list->head = new;
-    }
-}
-
-
-void insert_end(linked_list *list, int data) {
-    if (list->head == NULL)
-        insert_beggining(list, data);
-    else {
-        struct nodo *new = malloc(sizeof(struct nodo));
-        new->data = data;
-        list->tail->next = new;
-        list->tail = new;
-    }
-}
-
-
-void reverse(linked_list *list) {
-    struct nodo *current = list->head;
-    struct nodo *next = NULL;
-    struct nodo *previous = NULL;
-
-    while (current != NULL) {
-        next = current->next;
-        current->next = previous;
-
-        previous = current;
-        current = next;
-    }
-    list->head = previous;
-}
-
 
 
 void new_aresta(linked_list graph[], int ver1, int ver2) {
@@ -110,7 +35,7 @@ bool existe_aresta(linked_list graph[], int ver1, int ver2) {
     }
 
     linked_list *temp = &graph[ver1];
-    struct nodo *current = temp->head;
+    struct node *current = temp->head;
     while (true) {
         if (current->data == ver2)
             return true;
@@ -122,45 +47,76 @@ bool existe_aresta(linked_list graph[], int ver1, int ver2) {
 }
 
 
+int even_vertices(linked_list *graph, int vertice, int even) {
+    linked_list *temp = &graph[vertice];
+    struct node *current = temp->head;
+
+    if (vertice == MAX)
+        return even;
+    
+    if (list_size(current, 0) % 2 != 0)
+        even++;
+
+    vertice++;
+    return even_vertices(graph, vertice, even);
+}
+
+
+bool is_eulerian(linked_list *graph){
+    if (even_vertices(graph, 0, 0) > 0)
+        return false;
+    return true;
+}
+
+
+bool has_eulerian_path(linked_list *graph) {
+    if (even_vertices(graph, 0, 0) >= 3)
+        return false;
+    return true;
+}
+
+
 void print_menu(linked_list graph[]) {
     int choice;
     int ver1, ver2;
     bool existe;
 
-    while (1) {
-        printf(".--------- Escolha uma Opcao ---------.\n");
-        printf("| [1] Verificar aresta no grafo       |\n");
-        printf("| [2] Exibir os vétices vizinhos      |\n");
-        printf("| [3] Inserir aresta                  |\n");
-        printf("| [4] Sair                            |\n");
-        printf("'-------------------------------------'\n\n");
+    printf(".--------- Escolha uma Opcao ---------.\n");
+    printf("| [1] Imprimir grafo                  |\n");
+    printf("| [2] Inserir aresta                  |\n");
+    printf("| [3] Possui caminho euleriano        |\n");
+    printf("| [4] É euleriano                     |\n");
+    printf("| [9] Sair                            |\n");
+    printf("'-------------------------------------'\n\n");
+
+    while (true) {
         
-        printf("Grafo:\n");
-        print_graph(graph);
         printf("\nSua escolha: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                printf("Digite os vértices (v v): ");
-                scanf("%d %d", &ver1, &ver2); 
-                existe = existe_aresta(graph, ver1, ver2);
-                if (existe)
-                    printf("Existe!\n");
-                else
-                    printf("Não existe!\n");
+                printf("Grafo:\n");
+                print_graph(graph);
                 break;
             case 2:
-                printf("Informe o vertice: ");
-                scanf("%d", &ver1);
-                print_list(&graph[ver1]);
-                break;
-            case 3:
                 printf("Informe os vertices (v v): ");
                 scanf("%d %d", &ver1, &ver2);
                 new_aresta(graph, ver1, ver2);
                 break;
+            case 3:
+                if (has_eulerian_path(graph))
+                    printf("O grafo possui caminho euleriano\n");
+                else
+                    printf("O grafo não possui caminho euleriano\n");
+                break;
             case 4:
+                if(is_eulerian(graph))
+                    printf("O grafo é euleriano\n");
+                else
+                    printf("O grafo nao e euleriano\n");
+                break;
+            case 9:
                 exit(0);
             default:
                 printf("Invalid Option!\n");
