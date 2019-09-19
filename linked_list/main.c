@@ -13,7 +13,8 @@ void main() {
     printf("| [1] Insert from beggining  |\n");
     printf("| [2] Insert in the end      |\n");
     printf("| [3] Reverse List           |\n");
-    printf("| [4] Exit                   |\n");
+    printf("| [4] List Size              |\n");
+    printf("| [5] Exit                   |\n");
     printf("'----------------------------'\n\n");
     while (1) {
         print_list(&list);
@@ -36,7 +37,11 @@ void main() {
                 reverse(&list);
                 break;
             case 4:
+                printf("List size: %d\n", list_size(list.head, 0));
+                break;
+            case 5:
                 exit(0);
+
             default:
                 printf("Invalid Option!\n");
                 break;

@@ -52,6 +52,15 @@ void insert_end(linked_list *list, int data) {
 }
 
 
+int list_size(struct node *head, int size) {
+    if (head == NULL)
+        return size;
+
+    size++;
+    return list_size(head->next, size);
+}
+
+
 void reverse(linked_list *list) {
     struct node *current = list->head;
     struct node *next = NULL;
