@@ -14,7 +14,7 @@ void print_list(linked_list *list) {
     struct node *current = list->head;
     
     if (current == NULL) {
-        printf("List is Empty!\n\n");
+        printf("List is Empty!\n");
         return;
     }
 
