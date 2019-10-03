@@ -27,6 +27,8 @@ void print_graph(graph *graph);
 
 void new_vertice(graph *graph, int vertice);
 
+void insert_arest(graph *graph, int ver1, int ver2);
+
 bool is_arest(graph *graph, int ver1, int ver2);
 
 bool is_eulerian(graph *graph);

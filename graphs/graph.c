@@ -50,7 +50,7 @@ void insert_vertice(graph *graph, int vertice) {
 }
 
 
-bool existe_vertice(graph *graph, int vertice) {
+bool is_vertice(graph *graph, int vertice) {
     struct graph_node *current = graph->head;
 
     while (current != NULL) {
@@ -63,7 +63,7 @@ bool existe_vertice(graph *graph, int vertice) {
 
 
 void new_vertice(graph *graph, int vertice) {
-    if (existe_vertice(graph, vertice)) {
+    if (is_vertice(graph, vertice)) {
         printf("Vertice already exists!\n");
         return;
     }
@@ -71,72 +71,104 @@ void new_vertice(graph *graph, int vertice) {
 }
 
 
+struct graph_node *get_node(graph *graph, int vertice) {
+    struct graph_node *current = graph->head;
 
-// bool existe_aresta(linked_list graph[], int ver1, int ver2) {
-//     if (ver1 > MAX || ver2 > MAX) {
-//         printf("Vertice não existe no grafo\n");
-//         return false;
-//     }
-// 
-//     linked_list *temp = &graph[ver1];
-//     struct node *current = temp->head;
-//     while (true) {
-//         if (current->data == ver2)
-//             return true;
-//         if (current->next == NULL)
-//             break;
-//         current = current->next;
-//     }
-//     return false;
-// }
+    while (current != NULL) {
+        if (current->vertice == vertice)
+            return current;
+        current = current->next;
+    }
+    return NULL;
+}
+
+void insert_arest(graph *graph, int ver1, int ver2) {
+   
+    if (!(is_vertice(graph, ver1) && is_vertice(graph, ver2))) {
+        printf("ERROR: Vertice not in graph!");
+        return;
+    }
+
+    if (is_arest(graph, ver1, ver2)) {
+        printf("Arest already exists!\n");
+        return;
+    }
+    
+    linked_list *list1 = &(get_node(graph, ver1)->adjacents);
+    linked_list *list2 = &(get_node(graph, ver2)->adjacents);
+
+    insert_beggining(list1, ver2);
+    insert_beggining(list2, ver1);
+
+}
 
 
-// int even_vertices(linked_list *graph, int vertice, int even) {
-//     linked_list *temp = &graph[vertice];
-//     struct node *current = temp->head;
-// 
-//     if (vertice == MAX)
-//         return even;
-//     
-//     if (list_size(current, 0) % 2 != 0)
-//         even++;
-// 
-//     vertice++;
-//     return even_vertices(graph, vertice, even);
-// }
-// 
-// 
-// bool is_eulerian(linked_list *graph){
-//     if (even_vertices(graph, 0, 0) > 0)
-//         return false;
-//     return true;
-// }
-// 
-// 
-// bool has_eulerian_path(graph *graph) {
-//     if (even_vertices(graph, 0, 0) >= 3)
-//         return false;
-//     return true;
-// }
-// 
-// 
-// int total_vertices(graph *graph) {
-//     return num_vertices(graph, 0, 0);
-// }
-// 
-// 
-// int num_vertices(graph *graph, int vertice, int sum_vertices){
-//     linked_list *temp = &graph[vertice];
-//     struct node *current = temp->head;
-//     
-//     if(vertice == MAX)
-//         return sum_vertices;
-// 
-//     if(current != NULL)
-//         sum_vertices++;
-//     
-//     vertice++;
-//     return num_vertices(graph, vertice, sum_vertices);
-// }
-// 
-// 
+
+bool is_arest(graph *graph, int ver1, int ver2) {
+    
+    // Returns false if one of the vertices doesn't exists in graph
+    if (!(is_vertice(graph, ver1) && is_vertice(graph, ver2)))
+        return false;
+
+    struct graph_node *current = graph->head;
+
+    while (current != NULL) {
+        if (current->vertice == ver1) {
+            if (list_element_exists(&(current->adjacents), ver2))
+                return true;
+        }
+        current = current->next;
+    }
+    return false;
+}
+
+/*
+int even_vertices(linked_list *graph, int vertice, int even) {
+    linked_list *temp = &graph[vertice];
+    struct node *current = temp->head;
+
+    if (vertice == MAX)
+        return even;
+    
+    if (list_size(current, 0) % 2 != 0)
+        even++;
+
+    vertice++;
+    return even_vertices(graph, vertice, even);
+}
+
+
+bool is_eulerian(linked_list *graph){
+    if (even_vertices(graph, 0, 0) > 0)
+        return false;
+    return true;
+}
+
+
+bool has_eulerian_path(graph *graph) {
+    if (even_vertices(graph, 0, 0) >= 3)
+        return false;
+    return true;
+}
+
+
+int total_vertices(graph *graph) {
+    return num_vertices(graph, 0, 0);
+}
+
+
+int num_vertices(graph *graph, int vertice, int sum_vertices){
+    linked_list *temp = &graph[vertice];
+    struct node *current = temp->head;
+    
+    if(vertice == MAX)
+        return sum_vertices;
+
+    if(current != NULL)
+        sum_vertices++;
+    
+    vertice++;
+    return num_vertices(graph, vertice, sum_vertices);
+}
+
+*/
