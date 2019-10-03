@@ -15,7 +15,7 @@ int main(void) {
     printf(".--------- Escolha uma Opcao ---------.\n");
     printf("| [1] Imprimir grafo                  |\n");
     printf("| [2] Inserir vertice                 |\n");
-    printf("| [3] Possui caminho euleriano        |\n");
+    printf("| [3] Inserir aresta                  |\n");
     printf("| [4] É euleriano                     |\n");
     printf("| [9] Sair                            |\n");
     printf("'-------------------------------------'\n\n");
@@ -34,6 +34,11 @@ int main(void) {
                 printf("Informe o vertice: ");
                 scanf("%d", &ver1);
                 new_vertice(graph, ver1);
+                break;
+            case 3:
+                printf("Escolha os vertices (v v): ");
+                scanf("%d %d", &ver1, &ver2);
+                insert_arest(graph, ver1, ver2);
                 break;
             /*
             case 3:
