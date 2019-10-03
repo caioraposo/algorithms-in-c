@@ -75,3 +75,18 @@ void reverse(linked_list *list) {
     }
     list->head = previous;
 }
+
+
+bool list_element_exists(linked_list *list, int data) {
+    struct node *current = list->head;
+
+    if (current == NULL)
+        return false;
+
+    while (current != NULL) {
+        if (current->data == data)
+            return true;
+        current = current->next;
+    }
+    return false;
+}

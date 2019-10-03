@@ -1,6 +1,8 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdbool.h>
+
 
 struct node {
     int data;
@@ -26,6 +28,7 @@ void insert_beggining(linked_list *list, int data);
 void insert_end(linked_list *list, int data);
 void reverse(linked_list *list);
 int list_size(struct node *head, int size);
+bool list_element_exists(linked_list *list, int data);
 
 
 #endif
