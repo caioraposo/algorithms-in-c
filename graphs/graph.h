@@ -12,6 +12,7 @@ struct graph_node {
     int vertice;
     linked_list adjacents;
     struct graph_node *next;
+    bool marked;
 };
 
 
@@ -38,6 +39,8 @@ bool has_eulerian_path(graph *graph);
 bool is_hamiltonian(graph *graph);
 
 int total_vertices(graph *graph);
+
+void DFS(graph *graph, struct graph_node *head);
 
 
 #endif

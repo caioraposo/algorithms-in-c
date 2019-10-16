@@ -17,6 +17,7 @@ graph *new_graph() {
 struct graph_node *new_graph_node(int vertice) {
     struct graph_node *new = malloc(sizeof(struct graph_node));
     new->vertice = vertice;
+    new->marked = false;
     return new;
 }
 
@@ -71,13 +72,12 @@ void new_vertice(graph *graph, int vertice) {
 }
 
 
-struct graph_node *get_node(graph *graph, int vertice) {
-    struct graph_node *current = graph->head;
+struct graph_node *get_node(struct graph_node *head, int vertice) {
 
-    while (current != NULL) {
-        if (current->vertice == vertice)
-            return current;
-        current = current->next;
+    while (head != NULL) {
+        if (head->vertice == vertice)
+            return head;
+        head = head->next;
     }
     return NULL;
 }
@@ -94,8 +94,8 @@ void insert_arest(graph *graph, int ver1, int ver2) {
         return;
     }
     
-    linked_list *list1 = &(get_node(graph, ver1)->adjacents);
-    linked_list *list2 = &(get_node(graph, ver2)->adjacents);
+    linked_list *list1 = &(get_node(graph->head, ver1)->adjacents);
+    linked_list *list2 = &(get_node(graph->head, ver2)->adjacents);
 
     insert_beggining(list1, ver2);
     insert_beggining(list2, ver1);
@@ -120,6 +120,29 @@ bool is_arest(graph *graph, int ver1, int ver2) {
         current = current->next;
     }
     return false;
+}
+
+
+void DFS(graph *graph, struct graph_node *head) {
+
+    if (head == NULL)
+        return;
+
+    head->marked = true;
+    printf("%d -> ", head->vertice);
+
+    
+    linked_list *list = &(head->adjacents);
+    struct node *current = list->head;
+    while (current != NULL) {
+        // Get vertice of adjacents head
+        struct graph_node *graph_current = get_node(graph->head, current->data);
+        
+        if (graph_current->marked == false)
+            DFS(graph, graph_current);
+
+        current = current->next;
+    }
 }
 
 /*
