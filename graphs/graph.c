@@ -145,53 +145,40 @@ void DFS(graph *graph, struct graph_node *head) {
     }
 }
 
-/*
-int even_vertices(linked_list *graph, int vertice, int even) {
-    linked_list *temp = &graph[vertice];
-    struct node *current = temp->head;
+int even_vertices(struct graph_node *graph_head, int evens) {
 
-    if (vertice == MAX)
-        return even;
+    if (graph_head == NULL)
+        return evens;
     
-    if (list_size(current, 0) % 2 != 0)
-        even++;
+    linked_list *list = &(graph_head->adjacents);
 
-    vertice++;
-    return even_vertices(graph, vertice, even);
+    if (list_size(list->head, 0) % 2 != 0)
+        evens++;
+
+    return even_vertices(graph_head->next, evens);
 }
 
 
-bool is_eulerian(linked_list *graph){
-    if (even_vertices(graph, 0, 0) > 0)
+bool is_eulerian(graph *graph){
+    if (even_vertices(graph->head, 0) > 0)
         return false;
     return true;
 }
 
 
 bool has_eulerian_path(graph *graph) {
-    if (even_vertices(graph, 0, 0) >= 3)
+    if (even_vertices(graph->head, 0) >= 3)
         return false;
     return true;
 }
 
 
-int total_vertices(graph *graph) {
-    return num_vertices(graph, 0, 0);
-}
-
-
-int num_vertices(graph *graph, int vertice, int sum_vertices){
-    linked_list *temp = &graph[vertice];
-    struct node *current = temp->head;
+int graph_size(struct graph_node *graph_head, int sum_vertices){
     
-    if(vertice == MAX)
+    if(graph_head == NULL)
         return sum_vertices;
-
-    if(current != NULL)
-        sum_vertices++;
     
-    vertice++;
-    return num_vertices(graph, vertice, sum_vertices);
+    sum_vertices++;
+    return graph_size(graph_head->next, sum_vertices);
 }
 
-*/

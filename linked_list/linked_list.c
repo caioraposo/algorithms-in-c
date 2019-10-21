@@ -22,7 +22,7 @@ void print_list(linked_list *list) {
         printf(" %d ->", current->data);
         current = current->next;
     }
-    printf(" NULL\n\n");
+    printf(" NULL\n");
 }
 
 
