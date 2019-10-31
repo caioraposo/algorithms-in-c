@@ -24,6 +24,8 @@ typedef struct {
 
 graph *new_graph();
 
+void free_graph(struct graph_node *head);
+
 void print_graph(graph *graph);
 
 void new_vertice(graph *graph, int vertice);
@@ -41,6 +43,8 @@ bool is_hamiltonian(graph *graph);
 int total_vertices(graph *graph);
 
 void DFS(graph *graph, struct graph_node *head);
+
+void BFS(graph *graph, struct graph_node *head);
 
 
 #endif

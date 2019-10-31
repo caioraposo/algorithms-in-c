@@ -90,3 +90,10 @@ bool list_element_exists(linked_list *list, int data) {
     }
     return false;
 }
+
+
+void remove_beggining(linked_list *list){
+    struct node *head = list->head;
+    list->head = head->next;
+    free(head);
+}

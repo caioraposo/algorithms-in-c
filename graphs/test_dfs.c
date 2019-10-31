@@ -34,4 +34,8 @@ int main(void) {
     printf("\n");
 
     DFS(graph, graph->head);
+
+    printf("\n");
+    
+    BFS(graph, graph->head);
 }

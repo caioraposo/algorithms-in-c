@@ -22,6 +22,15 @@ struct graph_node *new_graph_node(int vertice) {
 }
 
 
+// Utilitary procedure to free the graph
+void free_graph(struct graph_node *head) {
+    if (head != NULL) {
+        free_graph(head->next);
+        free(head);
+    }
+}
+
+
 void print_graph(graph *graph) {
     struct graph_node *current = graph->head;
     
@@ -129,7 +138,7 @@ void DFS(graph *graph, struct graph_node *head) {
         return;
 
     head->marked = true;
-    printf("%d -> ", head->vertice);
+    printf("%d ", head->vertice);
 
     
     linked_list *list = &(head->adjacents);
@@ -144,6 +153,50 @@ void DFS(graph *graph, struct graph_node *head) {
         current = current->next;
     }
 }
+
+
+void unmark(graph *graph) {
+    struct graph_node *current = graph->head;
+
+    while (current != NULL) {
+        current->marked = false;
+        current = current->next;
+    }
+}
+
+
+void BFS(graph *graph, struct graph_node *head) {
+    unmark(graph);
+
+    linked_list *list = malloc(sizeof(linked_list));
+    initialize(list);
+    insert_end(list, head->vertice);
+    
+    printf("%d ", head->vertice);
+    head->marked = true;
+
+    while (list->head != NULL) {
+        struct node *first = malloc(sizeof(struct node));
+        first->data = (list->head)->data;
+        remove_beggining(list);
+
+        struct graph_node *current_graph = get_node(graph->head, first->data);
+        linked_list *adjacents = &(current_graph->adjacents);
+        struct node *current = adjacents->head;
+
+        while (current != NULL) {
+            struct graph_node *current_vertice = get_node(graph->head, current->data);
+            if (!(current_vertice->marked)) {
+                insert_end(list, current->data);
+                printf("%d ", current_vertice->vertice);
+                current_vertice->marked = true;
+            }
+            current = current->next;
+        }
+        
+    }
+}
+
 
 int even_vertices(struct graph_node *graph_head, int evens) {
 

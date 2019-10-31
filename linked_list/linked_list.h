@@ -25,6 +25,7 @@ void delete(linked_list *list, int position);
 void initialize(linked_list *list);
 void print_list(linked_list *list);
 void insert_beggining(linked_list *list, int data);
+void remove_beggining(linked_list *list);
 void insert_end(linked_list *list, int data);
 void reverse(linked_list *list);
 int list_size(struct node *head, int size);
