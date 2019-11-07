@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 
-#include "../linked_list/linked_list.h"
+#include "linked_list.h"
 #include "graph.h"
 
 
@@ -18,6 +18,7 @@ struct graph_node *new_graph_node(int vertice) {
     struct graph_node *new = malloc(sizeof(struct graph_node));
     new->vertice = vertice;
     new->marked = false;
+    new->color = 0;
     return new;
 }
 
@@ -138,7 +139,7 @@ void DFS(graph *graph, struct graph_node *head) {
         return;
 
     head->marked = true;
-    printf("%d ", head->vertice);
+    printf("%d -> ", head->vertice);
 
     
     linked_list *list = &(head->adjacents);
@@ -172,7 +173,7 @@ void BFS(graph *graph, struct graph_node *head) {
     initialize(list);
     insert_end(list, head->vertice);
     
-    printf("%d ", head->vertice);
+    printf("%d -> ", head->vertice);
     head->marked = true;
 
     while (list->head != NULL) {
@@ -235,3 +236,57 @@ int graph_size(struct graph_node *graph_head, int sum_vertices){
     return graph_size(graph_head->next, sum_vertices);
 }
 
+
+void uncolor(graph *graph) {
+    struct graph_node *current = graph->head;
+
+    while (current != NULL) {
+        current->color = 0;
+        current = current->next;
+    }
+}
+
+
+bool has_uncolored_vertice(graph *graph) {
+    struct graph_node *current = graph->head;
+
+    while (current != NULL) {
+        if (current->color == 0)
+            return true;
+        current = current->next;
+    }
+    return false;
+}
+
+
+void color_vertice(struct graph_node *vertice, int color) {
+    vertice->color = color;
+}
+
+
+bool vertice_adjacents_has_color(graph *graph, struct graph_node *vertice, int color) {
+    struct node *current = (vertice->adjacents).head;
+    
+    while (current != NULL) {
+        if (get_node(graph->head, current->data)->color == color)
+            return true;
+        current = current->next;
+    }
+    return false;
+}
+
+/*
+int minimum_graph_colors(graph *graph) {
+    linked_list *adjacents = graph->head->adjacents;
+    struct node *current = adjacents->head;
+    uncolor(graph);
+
+    while (has_uncolored_vertice(graph)) {
+        while (current != NULL) {
+            if (get_node(graph, current->data)->color == 0) {
+                
+            }
+        }
+    }
+}
+*/
