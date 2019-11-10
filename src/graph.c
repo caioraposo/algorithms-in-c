@@ -9,7 +9,6 @@
 
 graph *new_graph() {
     graph *graph = malloc(sizeof(graph));
-    graph->head = NULL;
     return graph;
 }
 
@@ -256,11 +255,6 @@ bool has_uncolored_vertice(graph *graph) {
         current = current->next;
     }
     return false;
-}
-
-
-void color_vertice(struct graph_node *vertice, int color) {
-    vertice->color = color;
 }
 
 
