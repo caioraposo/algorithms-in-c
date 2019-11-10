@@ -4,11 +4,9 @@ sources = [
   'test_graph.c'
   ]
 
-check = dependency('cmocka')
+cmocka = dependency('cmocka')
 
 incdir = include_directories('../include')
 
-exe = executable('tests', sources, include_directories : incdir, dependencies : check)
-
-test('graph test', exe)
+exe = executable('tests', sources, include_directories : incdir, dependencies : cmocka)
 

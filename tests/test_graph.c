@@ -3,7 +3,7 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <stdbool.h>
-#include <assert.h>
+
 
 #include "graph.h"
 #include "linked_list.h"
@@ -15,8 +15,10 @@ void test_graph_has_vertice() {
 
     insert_vertice(graph, 1);
 
-    assert(is_vertice(graph, 1));
-    assert(!(is_vertice(graph, 2)));
+    assert_true(is_vertice(graph, 1));
+    assert_false(is_vertice(graph, 2));
+    
+    free_graph(graph->head);
 }
 
 
@@ -25,27 +27,30 @@ void test_has_uncolored_vertice() {
     graph *graph = new_graph();
 
     insert_vertice(graph, 1);
-    
-    assert_true(has_uncolored_vertice(graph));
 
+    assert_true(has_uncolored_vertice(graph));
+    
     graph->head->color = 1;
 
     assert_false(has_uncolored_vertice(graph));
 
-    free_graph(graph);
+    free_graph(graph->head);
 }
 
 
 /* Take a colored graph and uncolor it */
-void test_uncolor_colored_graph() {
+void test_uncolor_colored_vertice() {
     graph *graph = new_graph();
     
     insert_vertice(graph, 1);
     
     graph->head->color = 1;
+    assert_false(has_uncolored_vertice(graph));
 
     uncolor(graph);
     assert_true(has_uncolored_vertice(graph));
+
+    free_graph(graph->head);
 }
 
 
@@ -53,9 +58,12 @@ void test_color_vertice() {
     graph *graph = new_graph();
     
     insert_vertice(graph, 1);
-    color_vertice(graph->head, 1);
+
+    graph->head->color = 1;
 
     assert_false(has_uncolored_vertice(graph));
+
+    free_graph(graph->head);
 }
 
 
@@ -63,14 +71,12 @@ void test_get_node_by_number() {
     graph *graph = new_graph();
     
     insert_vertice(graph, 1);
-    insert_vertice(graph, 2);
-    insert_vertice(graph, 3);
-    insert_vertice(graph, 4);
     
-    struct graph_node *vertice = get_node(graph->head, 2);
+    struct graph_node *vertice = get_node(graph->head, 1);
 
-    assert_int_equal(vertice->vertice, 2);
+    assert_true(vertice->vertice == 1);
 
+    free_graph(graph->head);
 }
 
 
@@ -79,34 +85,29 @@ void test_if_vertice_adjacents_have_same_color() {
     
     insert_vertice(graph, 1);
     insert_vertice(graph, 2);
-    insert_vertice(graph, 3);
 
     insert_arest(graph, 1, 2);
-    insert_arest(graph, 1, 3);
     
-    color_vertice(get_node(graph->head, 2), 1);
-    color_vertice(get_node(graph->head, 3), 2);
+    get_node(graph->head, 2)->color = 2;
     
-    assert_true(vertice_adjacents_has_color(graph, get_node(graph->head, 1), 1));
     assert_true(vertice_adjacents_has_color(graph, get_node(graph->head, 1), 2));
-    assert_false(vertice_adjacents_has_color(graph, get_node(graph->head, 1), 3));
+    assert_false(vertice_adjacents_has_color(graph, get_node(graph->head, 1), 1));
 
+    free_graph(graph->head);
 }
 
 
 
 int main(void) {
     
-    /*
     const struct CMUnitTest tests[] = {
         cmocka_unit_test(test_graph_has_vertice),
         cmocka_unit_test(test_has_uncolored_vertice),
-        cmocka_unit_test(test_uncolor_colored_graph),
+        cmocka_unit_test(test_uncolor_colored_vertice),
         cmocka_unit_test(test_color_vertice),
         cmocka_unit_test(test_get_node_by_number),
         cmocka_unit_test(test_if_vertice_adjacents_have_same_color),
-
     };
+
     return cmocka_run_group_tests(tests, NULL, NULL);
-    */
 }
