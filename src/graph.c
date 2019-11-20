@@ -9,6 +9,7 @@
 
 graph *new_graph() {
     graph *graph = malloc(sizeof(graph));
+    graph->head = NULL;
     return graph;
 }
 
@@ -33,14 +34,14 @@ void free_graph(struct graph_node *head) {
 
 void print_graph(graph *graph) {
     struct graph_node *current = graph->head;
-    
+
     if (current == NULL) {
         printf("Graph is Empty!\n");
         return;
     }
 
     while (current != NULL) {
-        printf("[%d] ", current->vertice);
+        printf("[%d | color: %d] ", current->vertice, current->color);
         // Adjacents is a linked list, so it uses the linked list function.
         print_list(&(current->adjacents));
         current = current->next;
@@ -92,7 +93,7 @@ struct graph_node *get_node(struct graph_node *head, int vertice) {
 }
 
 void insert_arest(graph *graph, int ver1, int ver2) {
-   
+
     if (!(is_vertice(graph, ver1) && is_vertice(graph, ver2))) {
         printf("ERROR: Vertice not in graph!");
         return;
@@ -102,7 +103,7 @@ void insert_arest(graph *graph, int ver1, int ver2) {
         printf("Arest already exists!\n");
         return;
     }
-    
+
     linked_list *list1 = &(get_node(graph->head, ver1)->adjacents);
     linked_list *list2 = &(get_node(graph->head, ver2)->adjacents);
 
@@ -114,7 +115,7 @@ void insert_arest(graph *graph, int ver1, int ver2) {
 
 
 bool is_arest(graph *graph, int ver1, int ver2) {
-    
+
     // Returns false if one of the vertices doesn't exists in graph
     if (!(is_vertice(graph, ver1) && is_vertice(graph, ver2)))
         return false;
@@ -140,13 +141,13 @@ void DFS(graph *graph, struct graph_node *head) {
     head->marked = true;
     printf("%d -> ", head->vertice);
 
-    
+
     linked_list *list = &(head->adjacents);
     struct node *current = list->head;
     while (current != NULL) {
         // Get vertice of adjacents head
         struct graph_node *graph_current = get_node(graph->head, current->data);
-        
+
         if (graph_current->marked == false)
             DFS(graph, graph_current);
 
@@ -171,7 +172,7 @@ void BFS(graph *graph, struct graph_node *head) {
     linked_list *list = malloc(sizeof(linked_list));
     initialize(list);
     insert_end(list, head->vertice);
-    
+
     printf("%d -> ", head->vertice);
     head->marked = true;
 
@@ -193,7 +194,7 @@ void BFS(graph *graph, struct graph_node *head) {
             }
             current = current->next;
         }
-        
+
     }
 }
 
@@ -202,7 +203,7 @@ int even_vertices(struct graph_node *graph_head, int evens) {
 
     if (graph_head == NULL)
         return evens;
-    
+
     linked_list *list = &(graph_head->adjacents);
 
     if (list_size(list->head, 0) % 2 != 0)
@@ -227,10 +228,10 @@ bool has_eulerian_path(graph *graph) {
 
 
 int graph_size(struct graph_node *graph_head, int sum_vertices){
-    
+
     if(graph_head == NULL)
         return sum_vertices;
-    
+
     sum_vertices++;
     return graph_size(graph_head->next, sum_vertices);
 }
@@ -250,7 +251,7 @@ bool has_uncolored_vertice(graph *graph) {
     struct graph_node *current = graph->head;
 
     while (current != NULL) {
-        if (current->color == 0)
+        if (vertice_is_uncolored(current))
             return true;
         current = current->next;
     }
@@ -258,9 +259,9 @@ bool has_uncolored_vertice(graph *graph) {
 }
 
 
-bool vertice_adjacents_has_color(graph *graph, struct graph_node *vertice, int color) {
-    struct node *current = (vertice->adjacents).head;
-    
+bool vertice_adjacents_has_color(graph *graph, linked_list *adjacents, int color) {
+    struct node *current = adjacents->head;
+
     while (current != NULL) {
         if (get_node(graph->head, current->data)->color == color)
             return true;
@@ -269,18 +270,33 @@ bool vertice_adjacents_has_color(graph *graph, struct graph_node *vertice, int c
     return false;
 }
 
-/*
-int minimum_graph_colors(graph *graph) {
-    linked_list *adjacents = graph->head->adjacents;
-    struct node *current = adjacents->head;
+
+bool vertice_is_uncolored(struct graph_node *vertice) {
+    if (vertice->color == 0)
+        return true;
+    return false;
+}
+
+
+void color_graph_with(graph *graph, int color) {
+    struct graph_node *vertice = graph->head;
+
+    while (vertice != NULL) {
+        if (vertice_is_uncolored(vertice) && !(vertice_adjacents_has_color(graph, &(vertice->adjacents), color)))
+            vertice->color = color;
+        vertice = vertice->next;
+    }
+
+}
+
+
+int get_minimum_chromatic_number(graph *graph) {
+    int total_colors = 0;
     uncolor(graph);
 
     while (has_uncolored_vertice(graph)) {
-        while (current != NULL) {
-            if (get_node(graph, current->data)->color == 0) {
-                
-            }
-        }
+        total_colors++;
+        color_graph_with(graph, total_colors);
     }
+    return total_colors;
 }
-*/

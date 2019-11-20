@@ -26,11 +26,12 @@ typedef struct {
 graph *new_graph();
 
 
-struct graph_node *get_node(struct graph_node *head, int);
+struct graph_node *get_node(struct graph_node *head, int vertice);
 
 void free_graph(struct graph_node *head);
 void print_graph(graph *graph);
 void new_vertice(graph *graph, int vertice);
+void insert_vertice(graph *graph, int vertice);
 void insert_arest(graph *graph, int ver1, int ver2);
 
 bool is_arest(graph *graph, int ver1, int ver2);
@@ -42,6 +43,12 @@ int total_vertices(graph *graph);
 
 void DFS(graph *graph, struct graph_node *head);
 void BFS(graph *graph, struct graph_node *head);
+
+bool vertice_is_uncolored(struct graph_node *vertice);
+bool vertice_adjacents_has_color(graph *graph, linked_list *adjacents, int color);
+void color_graph_with(graph *graph, int color);
+int get_minimum_chromatic_number(graph *graph);
+
 
 
 #endif
